@@ -44,11 +44,6 @@ const PatientSchema = new mongoose.Schema({
     PastMedicalConditions : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'PastMedicalConditions'
-    },
-
-    PastMedications : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'PastMedications'
     }
 
 });
