@@ -7,20 +7,8 @@ const MedicinalProduct = {
         type : String
     },
 
-    purposeOfUse : {
-        type : String
-    },
-
     frequency : {
         type : Number
-    },
-
-    diagnosisStartDate : {
-        type : Date
-    },
-
-    diagnosisEndDate : {
-        type : Date
     },
 
     usageRecomendations : {
