@@ -134,19 +134,21 @@ function riskFactorsClub(){
 }
 
 function mainClub(name,age,gender,weight,riskFactorsClub,concurrentMedicalConditionsClub,PastMedicalConditionsClub){
-    const newPatient = new Patient({
-        name : name,
-        age : age,
-        gender : gender,
-        weight : weight,
-        RiskFactors : riskFactorsClub,
-        concurrentMedicalConditionsClub : concurrentMedicalConditionsClub,
-        PastMedicalConditions : newPatientPastMedicalConditions
-    })
-    newPatient.save();
-    const num = newPatient._id;
-    const generatedId = parseInt(num,10);
-    newPatient.pId = generatedId;
+    // const newPatient = new Patient({
+    //     name : name,
+    //     age : age,
+    //     gender : gender,
+    //     weight : weight,
+    //     RiskFactors : riskFactorsClub,
+    //     concurrentMedicalConditionsClub : concurrentMedicalConditionsClub,
+    //     PastMedicalConditions : PastMedicalConditionsClub
+    // })
+    // newPatient.save();
+    // const num = newPatient._id;
+    // const generatedId = parseInt(num,10);
+    // newPatient.pId = generatedId;
+    const obj = riskFactorsClub;
+    console.log(obj);
     
 }
 
@@ -161,7 +163,6 @@ function findPatient(pId){
     })
 }
 
-mainClub("sampleName",90,54,"male",riskFactorsClub,concurrentMedicalConditionsClub,PastMedicalConditionsClub);
-
+mainClub("sampleName",90,"male",54,riskFactorsClub,concurrentMedicalConditionsClub,PastMedicalConditionsClub);
 
 console.log("done");
