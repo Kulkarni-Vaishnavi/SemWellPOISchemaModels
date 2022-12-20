@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 
-mongoose.connect("mongodb+srv://harshak02:jntucse1234@cluster0.sttwkrc.mongodb.net/SemWellPOI", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://harshak02:jntucse1234@cluster0.sttwkrc.mongodb.net/SemWellPatient", {useNewUrlParser: true});
 
 const Demographics = require('./models/Demographics');
 const RiskFactors = require('./models/RiskFactors');
@@ -9,11 +9,26 @@ const ConcurrentMedicalConditions = require('./models/ConcurrentMedicalCondition
 const PastMedicalConditions = require('./models/PastMedicalConditions');
 const PastMedications = require('./models/PastMedications');
 
-const POISchema = new mongoose.Schema({
+const PatientSchema = new mongoose.Schema({
 
-    Demographics : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'Demographics'
+    name : {
+        type : String,
+        required : true
+    },
+    
+    age : {
+        type : Number,
+        required : true
+    },
+
+    gender: {
+        type : String,
+        required : true
+    },
+
+    weight : {
+        type : Number,
+        required : true
     },
 
     RiskFactors : {
@@ -38,8 +53,7 @@ const POISchema = new mongoose.Schema({
 
 });
 
-const POI = mongoose.model('POI',POISchema);
-
+const Patient = mongoose.model('Patient',PatientSchema);
 
 //adding new Patient Information
 
@@ -132,7 +146,7 @@ newPatientConcurrentMedicalConditions.save();
 newPatientPastMedicalConditions.save();
 newPatientPastMedications.save();
 
-const newPatient = new POI({
+const newPatient = new Patient({
     Demographics : newPatientDemographics,
     RiskFactors : newPatientRiskFactors,
     ConcurrentMedicalConditions : newPatientConcurrentMedicalConditions,
