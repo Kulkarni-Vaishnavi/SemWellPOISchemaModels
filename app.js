@@ -1,13 +1,17 @@
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 
-mongoose.connect("mongodb+srv://harshak02:jntucse1234@cluster0.sttwkrc.mongodb.net/SemWellPatient", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://harshak02:jntucse1234@cluster0.sttwkrc.mongodb.net/SemWellPat", {useNewUrlParser: true});
 
 const RiskFactors = require('./models/RiskFactors');
 const ConcurrentMedicalConditions = require('./models/ConcurrentMedicalConditions');
 const PastMedicalConditions = require('./models/PastMedicalConditions');
 
 const PatientSchema = new mongoose.Schema({
+
+    pId : {
+        type : Number,
+    },
 
     name : {
         type : String,
@@ -129,6 +133,11 @@ function riskFactorsClub(){
     return newPatientRiskFactors;
 }
 
+var name = "sampleName";
+var age = 90;
+var weight = 54;
+var gender = "male";
+
 function mainClub(name,age,gender,weight,riskFactorsClub,concurrentMedicalConditionsClub,newPatientPastMedicalConditions){
     const newPatient = new Patient({
         name : name,
@@ -140,9 +149,22 @@ function mainClub(name,age,gender,weight,riskFactorsClub,concurrentMedicalCondit
         PastMedicalConditions : newPatientPastMedicalConditions
     })
     newPatient.save();
+    const num = newPatient._id;
+    const generatedId = parseInt(num,10);
+    newPatient.pId = generatedId;
+    
 }
 
-
+function findPatient(pId){
+    Patient.findOne({pId : pId},function(err,patientDetails){
+        if(err){
+            console.log("Error");
+        }
+        else{
+            console.log(patientDetails);
+        }
+    })
+}
 
 
 console.log("done");
