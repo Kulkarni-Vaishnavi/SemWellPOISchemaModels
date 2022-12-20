@@ -133,12 +133,7 @@ function riskFactorsClub(){
     return newPatientRiskFactors;
 }
 
-var name = "sampleName";
-var age = 90;
-var weight = 54;
-var gender = "male";
-
-function mainClub(name,age,gender,weight,riskFactorsClub,concurrentMedicalConditionsClub,newPatientPastMedicalConditions){
+function mainClub(name,age,gender,weight,riskFactorsClub,concurrentMedicalConditionsClub,PastMedicalConditionsClub){
     const newPatient = new Patient({
         name : name,
         age : age,
@@ -165,6 +160,8 @@ function findPatient(pId){
         }
     })
 }
+
+mainClub("sampleName",90,54,"male",riskFactorsClub,concurrentMedicalConditionsClub,PastMedicalConditionsClub);
 
 
 console.log("done");
