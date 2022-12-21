@@ -3,166 +3,141 @@ mongoose.set('strictQuery', true);
 
 mongoose.connect("mongodb+srv://harshak02:jntucse1234@cluster0.sttwkrc.mongodb.net/SemWellPat", {useNewUrlParser: true});
 
-const RiskFactors = require('./models/RiskFactors');
-const ConcurrentMedicalConditions = require('./models/ConcurrentMedicalConditions');
-const PastMedicalConditions = require('./models/PastMedicalConditions');
+//concurrent Medical Conditions Helper
+const MedicalCondition = {
+    name : {
+        type : String
+    },
+
+    diagnosisDate : {
+        type : Date
+    },
+
+    treatmentMedications : {
+        type : [String]
+    }
+};
+
+//Past Medical Conditions Helper-1
+const MedicinalProduct = {
+    
+    name : {
+        type : String
+    },
+
+    frequency : {
+        type : Number
+    },
+
+    usageRecomendations : {
+        type : String
+    }
+};
+
+//Past Medical Conditions Helper-2
+const MedicalConditionP = {
+
+    name : {
+        type : String
+    },
+
+    diagnosisStartDate : {
+        type : Date
+    },
+
+    diagnosisEndDate : {
+        type : Date
+    },
+    
+    medicines : {
+        type : [MedicinalProduct]
+    }
+    
+};
+
+//Risk Factors Helper
+const RiskFactorsHelper = {
+
+    isPregnent : {
+        type : Boolean,
+        required : true
+    },
+
+    pregnencyCondition : {
+        type : String
+    },
+
+    isSmoking : {
+        type : Boolean,
+        required : true
+    },
+
+    ifStoppedDate : {
+        type : Date
+    },
+
+    isAlcohol : {
+        type : Boolean,
+        required : true
+    },
+
+    frequency : {
+        type : Number
+    },
+
+    isDrugAllergic : {
+        type : Boolean,
+        require : true
+    },
+
+    names : {
+        type : [String]
+    }
+
+};
+
 
 const PatientSchema = new mongoose.Schema({
 
-    pId : {
+    PId : {
         type : Number,
     },
 
-    name : {
+    Name : {
         type : String,
         required : true
     },
     
-    age : {
+    Age : {
         type : Number,
         required : true
     },
 
-    gender: {
+    Gender: {
         type : String,
         required : true
     },
 
-    weight : {
+    Weight : {
         type : Number,
         required : true
     },
 
-    RiskFactors : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'RiskFactors'
-    },
+    RiskFactors : RiskFactorsHelper,
 
     ConcurrentMedicalConditions : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'ConcurrentMedicalConditions'
+        nameOfMedicalCondition : {
+            type : [MedicalCondition],
+        }
     },
 
     PastMedicalConditions : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'PastMedicalConditions'
+        nameOfMedicalCondition : {
+            type : [MedicalConditionP],
+        }
     }
 
 });
+
 const Patient = mongoose.model('Patient',PatientSchema);
 
-//adding new Patient Information
-
-function PastMedicalConditionsClub(){
-    const newPatientPastMedicalConditions = new PastMedicalConditions({
-        nameOfMedicalCondition : [
-            {
-                name : "Diabetics",
-                diagnosisStartDate : new Date(),
-                diagnosisEndDate : new Date(),
-                medicines : [
-                    {
-                        name : "sample2",
-                        frequency : 20,
-                        usageRecomendations : "Lorem Ipsum"
-                    }
-                ]
-            },
-            {
-                name : "Ache",
-                diagnosisStartDate : new Date(),
-                diagnosisEndDate : new Date(),
-                medicines : [
-                    {
-                        name : "sample3",
-                        frequency : 10,
-                        usageRecomendations : "Lorem Ipsum"
-                    }
-                ]
-            },
-        ]
-    })
-    newPatientPastMedicalConditions.save();
-    return newPatientPastMedicalConditions;
-}
-
-function concurrentMedicalConditionsClub(){
-    const newPatientConcurrentMedicalConditions = new ConcurrentMedicalConditions({
-        nameOfMedicalCondition : [
-            {
-                name : "Fever",
-                diagnosisDate : new Date(),
-                treatmentMedications : ["sample1","sample2"]
-            },
-            {
-                name : "Cough",
-                diagnosisDate : new Date(),
-                treatmentMedications : ["sample3","sample4"]
-            }
-        ]
-    });
-    newPatientConcurrentMedicalConditions.save();
-    return newPatientConcurrentMedicalConditions;
-}
-
-function riskFactorsClub(){
-    const newPatientRiskFactors = new RiskFactors({
-
-        pregnency : {
-            isPregnent : true,
-            pregnencyCondition : "Lactation"
-        },
-    
-        smoking : {
-            isSmoking : true,
-            ifStoppedDate : new Date()
-        },
-    
-        alcoholUse : {
-            isAlcohol : true,
-            frequency : 20
-        },
-    
-        drugAllergyHistory : {
-            isDrugAllergic : true,
-            names : ["abc","xyx","hju"]
-        }
-    
-    })
-    newPatientRiskFactors.save();
-    return newPatientRiskFactors;
-}
-
-function mainClub(name,age,gender,weight,riskFactorsClub,concurrentMedicalConditionsClub,PastMedicalConditionsClub){
-    // const newPatient = new Patient({
-    //     name : name,
-    //     age : age,
-    //     gender : gender,
-    //     weight : weight,
-    //     RiskFactors : riskFactorsClub,
-    //     concurrentMedicalConditionsClub : concurrentMedicalConditionsClub,
-    //     PastMedicalConditions : PastMedicalConditionsClub
-    // })
-    // newPatient.save();
-    // const num = newPatient._id;
-    // const generatedId = parseInt(num,10);
-    // newPatient.pId = generatedId;
-    const obj = riskFactorsClub;
-    console.log(obj);
-    
-}
-
-function findPatient(pId){
-    Patient.findOne({pId : pId},function(err,patientDetails){
-        if(err){
-            console.log("Error");
-        }
-        else{
-            console.log(patientDetails);
-        }
-    })
-}
-
-mainClub("sampleName",90,"male",54,riskFactorsClub,concurrentMedicalConditionsClub,PastMedicalConditionsClub);
-
-console.log("done");
