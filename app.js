@@ -1,56 +1,57 @@
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 
-mongoose.connect("mongodb+srv://harshak02:jntucse1234@cluster0.sttwkrc.mongodb.net/SemWellPat", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://harshak02:jntucse1234@cluster0.sttwkrc.mongodb.net/newSemTab", {useNewUrlParser: true});
 
 //concurrent Medical Conditions Helper
 const MedicalCondition = {
     name : {
-        type : String
+        type : String,
+        required : true,
     },
-
     diagnosisDate : {
-        type : Date
+        type : Date,
+        required : true,
     },
-
     treatmentMedications : {
-        type : [String]
+        type : [String],
+        required : true,
     }
 };
 
 //Past Medical Conditions Helper-1
 const MedicinalProduct = {
-    
     name : {
-        type : String
+        type : String,
+        required : true,
     },
-
     frequency : {
-        type : Number
+        type : Number,
+        required : true,
     },
-
     usageRecomendations : {
-        type : String
+        type : String,
+        required : true,
     }
 };
 
 //Past Medical Conditions Helper-2
 const MedicalConditionP = {
-
     name : {
-        type : String
+        type : String,
+        required : true,
     },
-
     diagnosisStartDate : {
-        type : Date
+        type : Date,
+        required : true,
     },
-
     diagnosisEndDate : {
-        type : Date
+        type : Date,
+        required : true,
     },
-    
     medicines : {
-        type : [MedicinalProduct]
+        type : [MedicinalProduct],
+        required : true,
     }
     
 };
@@ -60,29 +61,32 @@ const RiskFactorsHelper = {
 
     isPregnent : {
         type : Boolean,
-        required : true
+        required : true,
     },
 
     pregnencyCondition : {
-        type : String
+        type : String,
+        required : true,
     },
 
     isSmoking : {
         type : Boolean,
-        required : true
+        required : true,
     },
 
     ifStoppedDate : {
-        type : Date
+        type : Date,
+        required : true,
     },
 
     isAlcohol : {
         type : Boolean,
-        required : true
+        required : true,
     },
 
     frequency : {
-        type : Number
+        type : Number,
+        required : true,
     },
 
     isDrugAllergic : {
@@ -91,7 +95,8 @@ const RiskFactorsHelper = {
     },
 
     names : {
-        type : [String]
+        type : [String],
+        required : true,
     }
 
 };
@@ -99,8 +104,9 @@ const RiskFactorsHelper = {
 
 const PatientSchema = new mongoose.Schema({
 
-    PId : {
+    Pid : {
         type : Number,
+        required : true
     },
 
     Name : {
@@ -141,3 +147,72 @@ const PatientSchema = new mongoose.Schema({
 
 const Patient = mongoose.model('Patient',PatientSchema);
 
+function addFunc(data){
+    const newPatient = new Patient({
+
+        Pid : 1001,
+        Name : "vivek",
+        Age : 23,
+        Gender : "male",
+        Weight : 56,
+
+        RiskFactors : {
+            isPregnent : true,
+            pregnencyCondition : "Lactation",
+            isSmoking : true,
+            ifStoppedDate : Date("23-10-2002"),
+            isAlcohol : true,
+            frequency : 78,
+            isDrugAllergic : true,
+            names : ["Abc","Xyz","Def"]      
+        },
+
+        ConcurrentMedicalConditions : {
+            nameOfMedicalCondition : [{
+                name : "fever",
+                diagnosisDate : Date("23-10-2002"),
+                treatmentMedications : ["Ab","Cd","Ef"],
+            },
+            {
+                name : "fever",
+                diagnosisDate : Date("23-10-2002"),
+                treatmentMedications : ["Ab","Cd","Ef"],
+            }]         
+        },
+
+        PastMedicalConditions : {
+            nameOfMedicalCondition : [{
+                name : "Ache",
+                diagnosisStartDate : Date("31-10-2002"),
+                diagnosisEndDate : Date("21-09-2002"),
+                medicines : [{
+                    name : "xyzz",
+                    frequency : 30,
+                    usageRecomendations : "Lorem Ipsum"
+                },{
+                    name : "xyzz",
+                    frequency : 30,
+                    usageRecomendations : "Lorem Ipsum"
+                }]
+            }]
+        }
+
+    }); 
+    newPatient.save();
+}
+
+
+//invoke function to add into database
+// addFunc();
+
+Patient.findOne({Name : "vivek"},function(err,foundList){
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log("Yeah found the User Entry");
+        console.log(foundList.ConcurrentMedicalConditions.nameOfMedicalCondition[1].name);
+    }
+});
+
+console.log("Done");
