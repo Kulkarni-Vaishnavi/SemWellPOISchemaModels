@@ -101,7 +101,7 @@ const RiskFactorsHelper = {
 
 };
 
-
+// creating schema for patient
 const PatientSchema = new mongoose.Schema({
 
     Pid : {
